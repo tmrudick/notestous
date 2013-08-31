@@ -6,6 +6,8 @@
 		<link href="css/flick/jquery-ui-1.10.3.custom.min.css" rel="stylesheet" type="text/css">
 		<script src="js/jquery-1.9.1.js"></script>
 		<script src="js/jquery-ui-1.10.3.custom.js"></script>
+        <link rel="stylesheet" type="text/css" href="css/jquery.jqtimeline.css" />
+        <script type="text/javascript" src="js/jquery.jqtimeline.js"></script>
 		<title>notes to us</title>
 	</head>
 	<body>
@@ -26,16 +28,7 @@
                 $('#date').text(days[days.length - 1].date);
                 $('#current-image').attr('src', days[days.length - 1].url);
 
-                $('#slider').slider({
-                    value: days.length - 1,
-                    min: 0,
-                    max: days.length - 1,
-                    step: 1,
-                    slide: function(event, ui) {
-                        $('#date').text(days[ui.value].date);
-                        $('#current-image').attr('src', days[ui.value].url);
-                    }
-                })
+                $('#slider').jqtimeline({events:days, startYear: 2013, numYears: 1});
             }
 
 			$(function() {
@@ -43,7 +36,16 @@
                     url: '/photos.json',
                     dataType: 'json',
                     success: function(data) {
-                        days = data;
+                        days = []
+                        for (var i = 0; i < data.length; i++) {
+                            days.push({
+                                id: i,
+                                on: new Date(Date.parse(data[i].date)),
+                                name: data[i].comment,
+                                url: data[i].url
+                            });
+                        }
+
                         populateTimeline();
                     },
                     error: function() {
