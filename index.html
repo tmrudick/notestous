@@ -10,7 +10,7 @@
 	</head>
 	<body>
 		<h1>notes to us</h1>
-		<img src="#">
+		<img id="current-image" src="#">
 		<p id="date"></p>
 		<div id="slider"></div>
 		<div id="about">
@@ -20,22 +20,36 @@
 			<p>made by <a href="http://ellenchisa.com">ellen chisa</a> and <a href="http://tomrudick.com">tom rudick</a>.</p>
 		</div>
 		<script type="text/javascript">
+            var days = null;
+
+            function populateTimeline() {
+                $('#date').text(days[days.length - 1].date);
+                $('#current-image').attr('src', days[days.length - 1].url);
+
+                $('#slider').slider({
+                    value: days.length - 1,
+                    min: 0,
+                    max: days.length - 1,
+                    step: 1,
+                    slide: function(event, ui) {
+                        $('#date').text(days[ui.value].date);
+                        $('#current-image').attr('src', days[ui.value].url);
+                    }
+                })
+            }
+
 			$(function() {
-				var days = [{date: "July 20, 2013", image: "foo" },
-						    {date: "July 21, 2013", image: "bar" },
-						    {date: "July 22, 2013", image: "baz" }];
+                $.ajax({
+                    url: '/photos.json',
+                    dataType: 'json',
+                    success: function(data) {
+                        days = data;
+                        populateTimeline();
+                    },
+                    error: function() {
 
-				$('#date').text(days[2].date);
-
-    			$( "#slider" ).slider({
-    				value: days.length - 1,
-      				min: 0,
-      				max: days.length - 1,
-      				step: 1,
-      				slide: function( event, ui ) {
-        				$("#date").text(days[ui.value].date);
-      				}
-    			});
+                    }
+                });
   			});
 		</script>
 	</body>
