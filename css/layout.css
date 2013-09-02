@@ -20,4 +20,4 @@ body img {
     margin: 0 auto;
 }
 
-#slider .tick { z-index: 2; position: absolute; height: 100%; font-size: 1.8em; line-height: 1.8em; background: none; border-top: none; border-right: none; border-bottom: none; text-align: center; }
+#slider .tick { z-index: 2; position: absolute; height: 100%; width: 0px; border: 1px solid #666; font-size: 1.8em; line-height: 1.8em; background: none; border-top: none; border-right: none; border-bottom: none; text-align: center; }

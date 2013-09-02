@@ -12,7 +12,9 @@
 		<h1>notes to us</h1>
 		<img id="current-image" src="#">
 		<p id="date"></p>
-		<div id="slider"></div>
+		<div id="slider">
+            <div style="width: 100%; border: 1px solid #666; height: 0px;"></div>
+        </div>
 		<div id="about">
 
 		</div>
@@ -49,7 +51,6 @@
 
                     // Calculate position
                     var left = (sliderWidth / dateRange) * (timestamps[i] - minDate);
-                    alert(left + ' = (' + sliderWidth + '/' + dateRange + ') * ' + timestamps[i]);
 
                     tick.css({
                         left: left + 'px',
@@ -60,9 +61,21 @@
                 $('#date').text(days[days.length - 1].date);
                 $('#current-image').attr('src', days[days.length - 1].url);
 
-                $('#slider').slider({
+                var slider = $('#slider').slider({
                     min: minDate,
                     max: maxDate,
+                    slide: function(event, ui) {
+                        for (var i = 0; i < timestamps.length - 1; i++) {
+                            if (timestamps[i] <= ui.value && timestamps[i+1] >= ui.value) {
+                                if (ui.value - timestamps[i] < (timestamps[i+1] - timestamps[i]) / 2) {
+                                    slider.slider('option', 'value', timestamps[i], ui.value);
+                                } else {
+                                    slider.slider('option', 'value', timestamps[i+1], ui.value);
+                                }
+                            }
+                        }
+                        return false;
+                    }
                 });
             }
 
