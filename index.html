@@ -6,8 +6,6 @@
 		<link href="css/flick/jquery-ui-1.10.3.custom.min.css" rel="stylesheet" type="text/css">
 		<script src="js/jquery-1.9.1.js"></script>
 		<script src="js/jquery-ui-1.10.3.custom.js"></script>
-        <link rel="stylesheet" type="text/css" href="css/jquery.jqtimeline.css" />
-        <script type="text/javascript" src="js/jquery.jqtimeline.js"></script>
 		<title>notes to us</title>
 	</head>
 	<body>
@@ -25,10 +23,47 @@
             var days = null;
 
             function populateTimeline() {
+                var timestamps = [];
+                for (var i = 0; i < days.length; i++) {
+                    days[i].timestamp = Date.parse(days[i].date);
+
+                    if (days[i].timestamp > maxDate) {
+                        maxDate = days[i].timestamp;
+                    }
+
+                    if (days[i].timestamp < minDate || minDate === 0) {
+                        minDate = days[i].timestamp;
+                    }
+
+                    timestamps.push(days[i].timestamp);
+                }
+
+                timestamps.sort();
+                var minDate = timestamps[0],
+                    maxDate = timestamps[timestamps.length - 1],
+                    dateRange = maxDate - minDate,
+                    sliderWidth = $('#slider').width();
+
+                for (var i = 0; i < timestamps.length; i++) {
+                    var tick = $('<div class="tick ui-widget-content"></div>').appendTo($('#slider'));
+
+                    // Calculate position
+                    var left = (sliderWidth / dateRange) * (timestamps[i] - minDate);
+                    alert(left + ' = (' + sliderWidth + '/' + dateRange + ') * ' + timestamps[i]);
+
+                    tick.css({
+                        left: left + 'px',
+                        width: '20px'
+                    })
+                }
+
                 $('#date').text(days[days.length - 1].date);
                 $('#current-image').attr('src', days[days.length - 1].url);
 
-                $('#slider').jqtimeline({events:days, startYear: 2013, numYears: 1});
+                $('#slider').slider({
+                    min: minDate,
+                    max: maxDate,
+                });
             }
 
 			$(function() {
@@ -36,20 +71,11 @@
                     url: '/photos.json',
                     dataType: 'json',
                     success: function(data) {
-                        days = []
-                        for (var i = 0; i < data.length; i++) {
-                            days.push({
-                                id: i,
-                                on: new Date(Date.parse(data[i].date)),
-                                name: data[i].comment,
-                                url: data[i].url
-                            });
-                        }
-
+                        days = data;
                         populateTimeline();
                     },
                     error: function() {
-
+                        alert('error');
                     }
                 });
   			});
