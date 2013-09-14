@@ -3,7 +3,7 @@
 	<head>
 		<link href="http://fonts.googleapis.com/css?family=League+Script" rel="stylesheet" type="text/css">
 		<link href="css/layout.css" rel="stylesheet" type="text/css">
-		<link href="css/flick/jquery-ui-1.10.3.custom.min.css" rel="stylesheet" type="text/css">
+		<!-- <link href="css/flick/jquery-ui-1.10.3.custom.min.css" rel="stylesheet" type="text/css"> -->
 		<script src="js/jquery-1.9.1.js"></script>
 		<script src="js/jquery-ui-1.10.3.custom.js"></script>
 		<title>notes to us</title>
@@ -13,7 +13,7 @@
 		<img id="current-image" src="#">
 		<p id="date"></p>
 		<div id="slider">
-            <div style="width: 100%; border: 1px solid #666; height: 0px;"></div>
+            <div id="timeline"></div>
         </div>
 		<div id="about">
 
@@ -53,10 +53,15 @@
                     var left = (sliderWidth / dateRange) * (timestamps[i] - minDate);
 
                     tick.css({
-                        left: left + 'px',
-                        width: '20px'
+                        left: left + 'px'
                     })
                 }
+
+                $(window).resize(function () {
+                    $('#slider .tick').remove();
+                    populateTimeline();
+                });
+
 
                 $('#date').text(days[days.length - 1].date);
                 $('#current-image').attr('src', days[days.length - 1].url);
