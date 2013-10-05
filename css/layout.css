@@ -4,6 +4,24 @@ body {
     font-family: 'League Script', cursive;
 }
 
+#about {
+    font-family: Helvetica;
+    font-size: 8pt;
+    width:50%;
+    margin:0 auto;
+}
+
+.plain-text {
+    font-family: Helvetica;
+    font-size: 8pt;
+}
+
+.date-text {
+    font-family: 'League Script', cursive, bold;
+    font-size: 12pt;
+    font-weight:bold;
+}
+
 h1 {
     text-align: center;
     width: 100%;
@@ -11,6 +29,7 @@ h1 {
 }
 
 body img {
+    margin-top:-50px;
     height: 300px;
     width: 400px;
 }
