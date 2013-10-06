@@ -30,8 +30,8 @@ h1 {
 
 body img {
     margin-top:-50px;
-    height: 300px;
-    width: 400px;
+    height: 239px;
+    width: 426px;
 }
 
 #slider {
@@ -78,6 +78,7 @@ body img {
     height: 10px;
     margin-top: 4px;
     background: #666;
+    cursor: pointer;
 }
 
     .ui-widget-content {

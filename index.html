@@ -3,14 +3,13 @@
 	<head>
 		<link href="http://fonts.googleapis.com/css?family=League+Script" rel="stylesheet" type="text/css">
 		<link href="css/layout.css" rel="stylesheet" type="text/css">
-		<!-- <link href="css/flick/jquery-ui-1.10.3.custom.min.css" rel="stylesheet" type="text/css"> -->
 		<script src="js/jquery-1.9.1.js"></script>
 		<script src="js/jquery-ui-1.10.3.custom.js"></script>
 		<title>notes to us</title>
 	</head>
 	<body>
 		<h1>notes to us</h1>
-		<img id="current-image" src="#">
+		<img id="current-image" style="visibility: hidden">
 		<p id="date" class="date-text"></p>
 		<div id="slider">
             <div id="timeline"></div>
@@ -21,82 +20,6 @@
 			<div id="footer">
 			<p><span class="plain-text">made by</span> <a href="http://ellenchisa.com">Ellen Chisa</a><span class="plain-text"> and </span> <a href="http://tomrudick.com">Tom Rudick</a>.</p>
 		</div>
-		<script type="text/javascript">
-            var days = null;
-
-            function populateTimeline() {
-                var timestamps = [];
-                for (var i = 0; i < days.length; i++) {
-                    days[i].timestamp = Date.parse(days[i].date);
-
-                    if (days[i].timestamp > maxDate) {
-                        maxDate = days[i].timestamp;
-                    }
-
-                    if (days[i].timestamp < minDate || minDate === 0) {
-                        minDate = days[i].timestamp;
-                    }
-
-                    timestamps.push(days[i].timestamp);
-                }
-
-                timestamps.sort();
-                var minDate = timestamps[0],
-                    maxDate = timestamps[timestamps.length - 1],
-                    dateRange = maxDate - minDate,
-                    sliderWidth = $('#slider').width();
-
-                for (var i = 0; i < timestamps.length; i++) {
-                    var tick = $('<div class="tick ui-widget-content"></div>').appendTo($('#slider'));
-
-                    // Calculate position
-                    var left = (sliderWidth / dateRange) * (timestamps[i] - minDate);
-
-                    tick.css({
-                        left: left + 'px'
-                    })
-                }
-
-                $(window).resize(function () {
-                    $('#slider .tick').remove();
-                    populateTimeline();
-                });
-
-
-                $('#date').text(days[days.length - 1].date);
-                $('#current-image').attr('src', days[days.length - 1].url);
-
-                var slider = $('#slider').slider({
-                    min: minDate,
-                    max: maxDate,
-                    slide: function(event, ui) {
-                        for (var i = 0; i < timestamps.length - 1; i++) {
-                            if (timestamps[i] <= ui.value && timestamps[i+1] >= ui.value) {
-                                if (ui.value - timestamps[i] < (timestamps[i+1] - timestamps[i]) / 2) {
-                                    slider.slider('option', 'value', timestamps[i], ui.value);
-                                } else {
-                                    slider.slider('option', 'value', timestamps[i+1], ui.value);
-                                }
-                            }
-                        }
-                        return false;
-                    }
-                });
-            }
-
-			$(function() {
-                $.ajax({
-                    url: '/photos.json',
-                    dataType: 'json',
-                    success: function(data) {
-                        days = data;
-                        populateTimeline();
-                    },
-                    error: function() {
-                        alert('error');
-                    }
-                });
-  			});
-		</script>
+		<script type="text/javascript" src="js/slider.js"></script>
 	</body>
 </html>
