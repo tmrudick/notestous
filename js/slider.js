@@ -6,7 +6,28 @@ var Slider = (function() {
 
     function updateImage(index) {
         imgEl.attr('src', photos[index].url);
-        dateEl.text(photos[index].date)
+        dateEl.text(formatDate(photos[index].date));
+    }
+
+    function formatDate(date) {
+        var months = {
+            1: 'January',
+            2: 'February',
+            3: 'March',
+            4: 'April',
+            5: 'May',
+            6: 'June',
+            7: 'July',
+            8: 'August',
+            9: 'September',
+            10: 'October',
+            11: 'November',
+            12: 'December'
+        };
+
+        var components = date.split('/');
+
+        return months[+components[0]] + ' ' + +components[1] + ', ' + components[2];
     }
 
     function initWithData(data) {
@@ -84,6 +105,4 @@ var Slider = (function() {
             alert('error');
         }
     });
-
-    return { redraw: drawTimeline };
 })();
